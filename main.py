@@ -3,14 +3,7 @@ from janus_swi import janus
 
 client = OpenAI()
 
-history = [
-    {"role": "system", "content": "You are a translator that translates natural language to prolog."},
-    {"role": "user", "content": "When given a problem description and a question, your task is to: 1) write all the initial facts 2) define all the rules 3) parse the question into a query"},
-    {"role": "user", "content": "If it rains, the ground gets wet. It rains. Does the ground get wet?"},
-    {"role": "assistant", "content": "Facts:rain.\n\nRules:wet_ground :- rain.\n\nQuery:wet_ground."}
-]
-
-def translate_to_symbolic():
+def translate_to_symbolic(history):
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages= history
@@ -25,24 +18,21 @@ def parse_response(response):
     queries_section = sections[2].split(':', 1)[1].strip()
     return facts_section, rules_section, queries_section
 
-def main():
-    natural_language_problem = """
-    'Stranger Things' is a popular Netflix show. If a Netflix show is popular, Karen will binge-watch it.
-    If and only if Karen binge-watches a Netflix show, she will download it. 
-    Karen does not download 'Black Mirror'. 
-    'Black Mirror' is a Netflix show. 
-    If Karen binge-watches a Netflix show, she will share it to Lisa.
-    Is "Black Mirror" popular?
-    """
+def solver(natural_language_problem):
+    history = [
+    {"role": "system", "content": "You are a translator that translates natural language to prolog."},
+    {"role": "user", "content": "When given a problem description and a question, your task is to: 1) write all the initial facts 2) define all the rules 3) parse the question into a query"},
+    {"role": "user", "content": "If it rains, the ground gets wet. It rains. Does the ground get wet?"},
+    {"role": "assistant", "content": "Facts:rain.\n\nRules:wet_ground :- rain.\n\nQuery:wet_ground."}
+    ]
     history.append({"role": "user", "content": natural_language_problem})
 
     # Translate to symbolic representation
-    symbolic_representation = translate_to_symbolic()
-    print("Symbolic Representation:\n", symbolic_representation)
-    
+    symbolic_representation = translate_to_symbolic(history)
+
     # Parse/solve the response
-    successful_translation = False
-    while (not successful_translation):
+    num_unsuccessful_translations = 0
+    while (num_unsuccessful_translations < 3):
         try:
             parsed_str = ""
             facts_section, rules_section, queries_section = parse_response(symbolic_representation)
@@ -50,18 +40,30 @@ def main():
             try:
                 janus.consult("solution", parsed_str)
                 query_result = list(janus.query(queries_section))
+                print("Facts:", facts_section)
+                print("\nRules:", rules_section)
                 if query_result:
-                    print("Result: true")
+                    print("\nQuery:", queries_section, "\n\nResult: True")
                 else:
-                    print("Result: false")
+                    print("\nQuery:", queries_section, "\n\nResult: False")
             except:
                 print("Result: error in symbolic solver")
-            successful_translation = True
+            break
         except:
-            print("Response is not in the correct format, redoing the request...")
-            history.append({"role": "assistant", "content": symbolic_representation})
-            history.append({"role": "user", "content": "Your response should be in this exact same format:Facts:<f1><f2>...\n\nRules:<r1><r2>...\n\nQuery:<q1>"})
-            symbolic_representation = translate_to_symbolic()
+            num_unsuccessful_translations += 1
+            history.append({"role": "user", "content": "Your response should be in this exact same format:Facts:<f1>\n<f2>...\n\nRules:<r1>\n<r2>...\n\nQuery:<q1>"})
+            symbolic_representation = translate_to_symbolic(history)
+
+def main():
+    natural_language_problem = """
+    'Stranger Things' is a popular Netflix show. If a Netflix show is popular, Karen will binge-watch it.
+    If and only if Karen binge-watches a Netflix show, she will download it. 
+    Karen does not download 'Black Mirror'. 
+    'Black Mirror' is a Netflix show. 
+    If Karen binge-watches a Netflix show, she will share it to Lisa.
+    Is 'Black Mirror' popular?
+    """
+    solver(natural_language_problem)
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,32 @@
+If I volunteer at a local charity, I will feel a sense of fulfillment. 
+I volunteered at a local charity. 
+Do I feel a sense of fulfillment?
+
+If I practice playing the guitar daily, I will improve my skills. 
+I didn't practice playing the guitar daily. 
+Have my skills improved?
+
+'Stranger Things' is a popular Netflix show. 
+If a Netflix show is popular, Karen will binge-watch it.
+If and only if Karen binge-watches a Netflix show, she will download it. 
+Karen does not download 'Black Mirror'. 
+'Black Mirror' is a Netflix show. 
+If Karen binge-watches a Netflix show, she will share it to Lisa.
+Is 'Black Mirror' popular?
+
+'Breaking Bad' is a popular TV show. 
+If a TV show is popular, John will binge-watch it. 
+If and only if John binge-watches a TV show, he will recommend it to his friends. 
+John recommend 'Game of Thrones'. 
+'Game of Thrones' is a TV show. 
+If John binge-watches a TV show, he will talk about it at work. 
+Is "Game of Thrones" popular?
+
+6 people M, N, O, P, Q and R have the following attributes.
+M is richer than N, but shorter than R.
+N is richer than Q but taller than R.
+O is poorer than P and taller than M.
+P is poorer as well as shorter than Q.
+Q is poorer as well as shorter than M.
+R is richer than M and taller than O.
+Is R the richest person out of the given 6 persons?

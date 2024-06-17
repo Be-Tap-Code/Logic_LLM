@@ -55,15 +55,14 @@ def solver(natural_language_problem):
             symbolic_representation = translate_to_symbolic(history)
 
 def main():
-    natural_language_problem = """
-    'Stranger Things' is a popular Netflix show. If a Netflix show is popular, Karen will binge-watch it.
-    If and only if Karen binge-watches a Netflix show, she will download it. 
-    Karen does not download 'Black Mirror'. 
-    'Black Mirror' is a Netflix show. 
-    If Karen binge-watches a Netflix show, she will share it to Lisa.
-    Is 'Black Mirror' popular?
-    """
-    solver(natural_language_problem)
+    test_frame = open('problems.txt', 'r')
+    data = test_frame.read()
+    problems = data.split('\n\n')
+    for i in range(len(problems)):
+        natural_language_problem = problems[i]
+        solver(natural_language_problem)
+        print(">--------------------<")
+    test_frame.close()
 
 if __name__ == '__main__':
     main()

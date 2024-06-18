@@ -1,25 +1,23 @@
 from openai import OpenAI
 from janus_swi import janus
-import threading
-import queue
-import time
+from multiprocessing import Process, Queue
 
 client = OpenAI()
 
-def run_with_timeout(timeout, func, args):
-    q = queue.Queue()
+def wrapper(q, func, arg):
+    q.put(func(arg))
 
-    def wrapper():
-        q.put(func(args))
+def run_with_timeout(timeout, func, arg):
+    q = Queue()
 
-    thread = threading.Thread(target=wrapper)
-    thread.start()
+    p = Process(target=wrapper, args=(q, func, arg))
+    p.start()
+    p.join(timeout)
     
-    end_time = time.time() + timeout
-    while thread.is_alive():
-        if time.time() > end_time:
-            raise Exception("Solver execution timed out")
-        time.sleep(0.1)
+    if p.is_alive():
+        p.terminate()
+        p.join()
+        raise Exception("Function execution timed out")
     
     return q.get()
 
@@ -81,7 +79,7 @@ def main():
     for i in range(len(problems)):
         natural_language_problem = problems[i]
         try:
-            run_with_timeout(3, solver, natural_language_problem)
+            run_with_timeout(5, solver, natural_language_problem)
         except Exception as e:
             print(e)
         print(">--------------------<")

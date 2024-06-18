@@ -1,7 +1,27 @@
 from openai import OpenAI
 from janus_swi import janus
+import threading
+import queue
+import time
 
 client = OpenAI()
+
+def run_with_timeout(timeout, func, args):
+    q = queue.Queue()
+
+    def wrapper():
+        q.put(func(args))
+
+    thread = threading.Thread(target=wrapper)
+    thread.start()
+    
+    end_time = time.time() + timeout
+    while thread.is_alive():
+        if time.time() > end_time:
+            raise Exception("Solver execution timed out")
+        time.sleep(0.1)
+    
+    return q.get()
 
 def translate_to_symbolic(history):
     completion = client.chat.completions.create(
@@ -60,7 +80,10 @@ def main():
     problems = data.split('\n\n')
     for i in range(len(problems)):
         natural_language_problem = problems[i]
-        solver(natural_language_problem)
+        try:
+            run_with_timeout(3, solver, natural_language_problem)
+        except Exception as e:
+            print(e)
         print(">--------------------<")
     test_frame.close()
 

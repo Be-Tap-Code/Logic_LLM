@@ -1,0 +1,52 @@
+Given a problem description and a question. The task is to parse the problem and the question into first-order logic formulars.
+The grammar of the first-order logic formular is defined as follows:
+1) logical conjunction of expr1 and expr2: expr1 ∧ expr2
+2) logical disjunction of expr1 and expr2: expr1 ∨ expr2
+3) logical exclusive disjunction of expr1 and expr2: expr1 ⊕ expr2
+4) logical negation of expr1: ¬expr1
+5) expr1 implies expr2: expr1 → expr2
+6) expr1 if and only if expr2: expr1 ↔ expr2
+7) logical universal quantification: ∀x
+8) logical existential quantification: ∃x
+------
+Problem:
+∀x (DrinkRegularly(x, coffee) → IsDependentOn(x, caffeine))
+∀x (DrinkRegularly(x, coffee) ∨ (¬WantToBeAddictedTo(x, caffeine)))
+∀x (¬WantToBeAddictedTo(x, caffeine) → ¬AwareThatDrug(x, caffeine))
+¬(Student(rina) ⊕ ¬AwareThatDrug(rina, caffeine))
+¬(IsDependentOn(rina, caffeine) ⊕ Student(rina))
+Question:
+¬WantToBeAddictedTo(rina, caffeine) ∨ (¬AwareThatDrug(rina, caffeine))
+###
+Predicates:
+Dependent(x) ::: x is a person dependent on caffeine.
+Drinks(x) ::: x regularly drinks coffee.
+Jokes(x) ::: x jokes about being addicted to caffeine.
+Unaware(x) ::: x is unaware that caffeine is a drug.
+Student(x) ::: x is a student.
+Premises:
+∀x (Drinks(x) → Dependent(x)) ::: All people who regularly drink coffee are dependent on caffeine.
+∀x (Drinks(x) ⊕ Jokes(x)) ::: People eithe  r regularly drink coffee or joke about being addicted to caffeine.
+∀x (Jokes(x) → ¬Unaware(x)) ::: No one who jokes about being addicted to caffeine is unaware that caffeine is a drug. 
+(Student(rina) ∧ Unaware(rina)) ⊕ ¬(Student(rina) ∨ Unaware(rina)) ::: Rina is either a student and unaware that caffeine is a drug, or neither a student nor unaware that caffeine is a drug. 
+¬(Dependent(rina) ∧ Student(rina)) → (Dependent(rina) ∧ Student(rina)) ⊕ ¬(Dependent(rina) ∨ Student(rina)) ::: If Rina is not a person dependent on caffeine and a student, then Rina is either a person dependent on caffeine and a student, or neither a person dependent on caffeine nor a student.
+Conclusion:
+Jokes(rina) ⊕ Unaware(rina) ::: Rina is either a person who jokes about being addicted to caffeine or is unaware that caffeine is a drug.
+------
+Problem:
+[[PROBLEM]]
+Question:
+[[QUESTION]]
+
+Please generate the predicates, premises, and conclusion in the following format, all contents must be converted to the premises part, all the used functions must be defined in the predicates part:
+
+Predicates:
+Predicate definitions here
+
+Premises:
+Multiple Premises here
+example: ∀x (FunctionA(x) → ¬FunctionB(x)) ::: No one who jokes about being addicted to caffeine is unaware that caffeine is a drug.
+Conclusion:
+Conclusion here
+example: FunctionA(rina) ⊕ FunctionB(rina) ::: Rina is either a person who jokes about being addicted to caffeine or is unaware that caffeine is a drug.
+###

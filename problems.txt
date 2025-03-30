@@ -1,32 +1,11 @@
-If I volunteer at a local charity, I will feel a sense of fulfillment. 
-I volunteered at a local charity. 
-Do I feel a sense of fulfillment?
-
-If I practice playing the guitar daily, I will improve my skills. 
-I didn't practice playing the guitar daily. 
-Have my skills improved?
-
-'Stranger Things' is a popular Netflix show. 
-If a Netflix show is popular, Karen will binge-watch it.
-If and only if Karen binge-watches a Netflix show, she will download it. 
-Karen does not download 'Black Mirror'. 
-'Black Mirror' is a Netflix show. 
-If Karen binge-watches a Netflix show, she will share it to Lisa.
-Is 'Black Mirror' popular?
-
-'Breaking Bad' is a popular TV show. 
-If a TV show is popular, John will binge-watch it. 
-If and only if John binge-watches a TV show, he will recommend it to his friends. 
-John recommend 'Game of Thrones'. 
-'Game of Thrones' is a TV show. 
-If John binge-watches a TV show, he will talk about it at work. 
-Is "Game of Thrones" popular?
-
-6 people M, N, O, P, Q and R have the following attributes.
-M is richer than N, but shorter than R.
-N is richer than Q but taller than R.
-O is poorer than P and taller than M.
-P is poorer as well as shorter than Q.
-Q is poorer as well as shorter than M.
-R is richer than M and taller than O.
-Is R the richest person out of the given 6 persons?
+  {
+    "id": "FOLIO_dev_82",
+    "context": "No bakery is spicy. All cupcakes are bakeries. All hotpots are spicy. All products of Baked by Melissa are cupcakes. If dried Thai chilies are spicy or a bakery, then dried Thai chilies are a hotpot or are spicy.",
+    "question": "Based on the above information, is the following statement true, false, or uncertain? Dried Thai chilies are neither a product of Baked by Melissa nor a bakery.",
+    "options": [
+      "A) True",
+      "B) False",
+      "C) Uncertain"
+    ],
+    "answer": "A"
+  }
